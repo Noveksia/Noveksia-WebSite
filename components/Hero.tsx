@@ -36,10 +36,12 @@ function ChatDemo({ conversation }: { conversation: typeof site.hero.demo.conver
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     setVisibleMessages([]);
     setCurrentIndex(0);
     setIsTyping(false);
     setIsRunning(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversation.id]);
 
   useEffect(() => {
