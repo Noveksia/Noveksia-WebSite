@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+/* ─── Design tokens ─────────────────────────────────────────────────────── */
+:root {
+  --ink:    #15211C;
+  --paper:  #F6F4EF;
+  --honey:  #E29A2C;
+  --teal:   #0F3D3A;
+  --muted:  #6B736E;
+  --line:   #E3DFD6;
+
+  /* Derivados utilitarios */
+  --honey-10: #E29A2C1A;
+  --honey-20: #E29A2C33;
+  --ink-80:   #15211CCC;
+  --teal-90:  #0F3D3AE6;
+}
+
+/* ─── Tailwind v4 theme mapping ─────────────────────────────────────────── */
+@theme inline {
+  --color-ink:    var(--ink);
+  --color-paper:  var(--paper);
+  --color-honey:  var(--honey);
+  --color-teal:   var(--teal);
+  --color-muted:  var(--muted);
+  --color-line:   var(--line);
+
+  --font-display: var(--font-bricolage);
+  --font-body:    var(--font-inter);
+  --font-mono:    var(--font-geist-mono);
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+/* ─── Typography scale ───────────────────────────────────────────────────── */
+.text-display {
+  font-family: var(--font-bricolage), sans-serif;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.text-heading {
+  font-family: var(--font-bricolage), sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.text-eyebrow {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--honey);
+}
+
+/* ─── Focus visible ──────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--honey);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* ─── Selection ──────────────────────────────────────────────────────────── */
+::selection {
+  background-color: var(--honey-20);
+  color: var(--ink);
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes typing-dot {
+  0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); }
+  30%            { opacity: 1;   transform: scale(1); }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease both;
+}
+
+.animate-slide-right {
+  animation: slide-in-right 0.4s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in,
+  .animate-slide-right {
+    animation: none;
+  }
+}
