@@ -21,7 +21,7 @@ export default function Privacidad() {
             <h2 className="text-heading text-lg text-[var(--ink)] mb-3">Responsable del tratamiento</h2>
             <ul className="flex flex-col gap-1.5 list-none m-0 p-0">
               <li><strong className="text-[var(--ink)]">Responsable:</strong> Alberto Alonso Ferrer</li>
-              {/* NIF/CIF — pendiente de completar antes de publicar */}
+              <li><strong className="text-[var(--ink)]">NIF:</strong> 54230282P</li>
               <li><strong className="text-[var(--ink)]">Domicilio:</strong> Calle de la Toronga 23</li>
               <li><strong className="text-[var(--ink)]">Correo electrónico:</strong> noveksia@gmail.com</li>
             </ul>

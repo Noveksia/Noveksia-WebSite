@@ -22,7 +22,7 @@ export default function AvisoLegal() {
             <p className="mb-3">En cumplimiento del artículo 10 de la Ley 34/2002 de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa de que este sitio web es titularidad de:</p>
             <ul className="flex flex-col gap-1.5 list-none m-0 p-0">
               <li><strong className="text-[var(--ink)]">Titular:</strong> Alberto Alonso Ferrer</li>
-              {/* NIF/CIF — pendiente de completar antes de publicar */}
+              <li><strong className="text-[var(--ink)]">NIF:</strong> 54230282P</li>
               <li><strong className="text-[var(--ink)]">Domicilio:</strong> Calle de la Toronga 23</li>
               <li><strong className="text-[var(--ink)]">Correo electrónico:</strong> noveksia@gmail.com</li>
               {/* Sitio web — pendiente de confirmar dominio */}
