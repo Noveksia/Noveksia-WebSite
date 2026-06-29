@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export async function POST(req: NextRequest) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
@@ -13,13 +22,27 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Nombre y email son obligatorios." }, { status: 400 });
   }
 
+  if (
+    typeof name !== "string" || name.length > 100 ||
+    typeof email !== "string" || email.length > 200 ||
+    (businessType && (typeof businessType !== "string" || businessType.length > 100)) ||
+    (message && (typeof message !== "string" || message.length > 5000))
+  ) {
+    return NextResponse.json({ error: "Datos no válidos." }, { status: 400 });
+  }
+
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safeBusinessType = escapeHtml(businessType || "—");
+  const safeMessage = escapeHtml(message || "—");
+
   const html = `
     <h2>Nuevo mensaje de contacto — Noveksia</h2>
     <table cellpadding="8" style="border-collapse:collapse;font-family:sans-serif;font-size:14px">
-      <tr><td><strong>Nombre</strong></td><td>${name}</td></tr>
-      <tr><td><strong>Email / WhatsApp</strong></td><td>${email}</td></tr>
-      <tr><td><strong>Tipo de negocio</strong></td><td>${businessType || "—"}</td></tr>
-      <tr><td><strong>Mensaje</strong></td><td style="white-space:pre-wrap">${message || "—"}</td></tr>
+      <tr><td><strong>Nombre</strong></td><td>${safeName}</td></tr>
+      <tr><td><strong>Email / WhatsApp</strong></td><td>${safeEmail}</td></tr>
+      <tr><td><strong>Tipo de negocio</strong></td><td>${safeBusinessType}</td></tr>
+      <tr><td><strong>Mensaje</strong></td><td style="white-space:pre-wrap">${safeMessage}</td></tr>
     </table>
   `;
 
