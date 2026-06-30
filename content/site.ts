@@ -6,7 +6,7 @@
 export const site = {
   brand: {
     name: "Noveksia",
-    tagline: "Automatización con IA para pequeños negocios",
+    tagline: "Automatización con IA para cualquier negocio",
     domain: "noveksia.com", // pendiente de confirmar
     email: "noveksia@gmail.com",
     social: {
@@ -203,9 +203,7 @@ export const site = {
 
   results: {
     eyebrow: "Resultados",
-    headline: "Números reales de negocios como el tuyo",
-    disclaimer:
-      "⚠️ Estos son datos de referencia del sector, no resultados garantizados de Noveksia. Se sustituirán por casos reales en cuanto los tengamos.",
+    headline: "Lo que la automatización consigue para negocios como el tuyo",
     metrics: [
       { value: "–65%", label: "Tiempo en soporte al cliente" },
       { value: "+18%", label: "Recuperación de carritos" },
@@ -242,7 +240,7 @@ export const site = {
       {
         question: "¿Sirve para mi tipo de negocio?",
         answer:
-          "Si recibes mensajes repetitivos o quieres captar y retener clientes, sí. Hemos trabajado con e-commerce, tiendas de barrio, apicultores, fisioterapeutas, academias y más. Si no encaja, te lo decimos en el diagnóstico.",
+          "Si recibes mensajes repetitivos o quieres captar y retener clientes, sí. Está pensado para e-commerce, negocios locales de servicios, hostelería, clínicas, academias y más. Si no encaja, te lo decimos en el diagnóstico.",
       },
       {
         question: "¿Qué necesito aportar yo?",
@@ -278,7 +276,7 @@ export const site = {
   },
 
   footer: {
-    tagline: "Automatización con IA para pequeños negocios.",
+    tagline: "Automatización con IA para cualquier negocio.",
     links: [
       { label: "Aviso legal", href: "/aviso-legal" },
       { label: "Privacidad", href: "/privacidad" },

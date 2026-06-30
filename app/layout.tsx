@@ -25,11 +25,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Noveksia — Automatización con IA para pequeños negocios",
+  title: "Noveksia — Automatización con IA para cualquier negocio",
   description:
     "Atendemos a tus clientes, captamos leads y mantenemos tu negocio activo con IA. Recupera horas y vende más, sin contratar a nadie.",
   openGraph: {
-    title: "Noveksia — Automatización con IA para pequeños negocios",
+    title: "Noveksia — Automatización con IA para cualquier negocio",
     description:
       "Atendemos a tus clientes, captamos leads y mantenemos tu negocio activo con IA.",
     locale: "es_ES",
