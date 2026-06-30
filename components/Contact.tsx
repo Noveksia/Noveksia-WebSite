@@ -53,10 +53,10 @@ export function Contact() {
   return (
     <section
       id="contacto"
-      className="py-24 px-6 bg-[var(--paper)]"
+      className="py-14 md:py-24 px-6 bg-[var(--paper)]"
       aria-labelledby="contact-heading"
     >
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-start">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-start">
         {/* Left */}
         <div className="flex flex-col gap-8">
           <div>

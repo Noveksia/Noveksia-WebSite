@@ -22,11 +22,11 @@ export function Services() {
   return (
     <section
       id="servicios"
-      className="py-24 px-6 bg-[var(--paper)]"
+      className="py-14 md:py-24 px-6 bg-[var(--paper)]"
       aria-labelledby="services-heading"
     >
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-14">
+        <div className="text-center mb-10 md:mb-14">
           <span className="text-eyebrow block mb-4">{services.eyebrow}</span>
           <h2
             id="services-heading"

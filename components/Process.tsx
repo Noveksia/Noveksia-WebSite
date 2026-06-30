@@ -6,11 +6,11 @@ export function Process() {
   return (
     <section
       id="como-trabajamos"
-      className="py-24 px-6 bg-[var(--paper)]"
+      className="py-14 md:py-24 px-6 bg-[var(--paper)]"
       aria-labelledby="process-heading"
     >
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <span className="text-eyebrow block mb-4">{process.eyebrow}</span>
           <h2
             id="process-heading"
@@ -59,7 +59,7 @@ export function Process() {
           ))}
         </ol>
 
-        <div className="mt-16 text-center">
+        <div className="mt-10 md:mt-16 text-center">
           <a
             href="#contacto"
             className="inline-flex items-center gap-2 bg-[var(--honey)] text-[var(--ink)] font-semibold px-8 py-4 rounded-full text-base hover:opacity-90 active:scale-95 transition-all shadow-sm"

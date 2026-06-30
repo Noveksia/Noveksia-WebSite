@@ -130,7 +130,7 @@ export function Hero() {
   const demos = site.hero.demo.conversations;
 
   return (
-    <section className="relative min-h-screen flex items-center pt-20 pb-16 overflow-hidden bg-[var(--paper)]">
+    <section className="relative min-h-screen flex items-center pt-16 pb-10 sm:pt-20 sm:pb-16 overflow-hidden bg-[var(--paper)]">
       {/* Animated background paths */}
       <FloatingPathsBackground />
 
@@ -144,13 +144,13 @@ export function Hero() {
         }}
       />
 
-      <div className="relative max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center w-full">
+      <div className="relative max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
         {/* Left: Copy */}
         <div className="flex flex-col gap-8">
           <div>
             <span className="text-eyebrow block mb-4">{site.hero.eyebrow}</span>
             <h1
-              className="text-display text-5xl sm:text-6xl lg:text-7xl text-[var(--ink)] mb-6"
+              className="text-display text-4xl sm:text-5xl lg:text-7xl text-[var(--ink)] mb-5"
               style={{ whiteSpace: "pre-line" }}
             >
               {site.hero.headline}
@@ -179,17 +179,17 @@ export function Hero() {
           </div>
 
           {/* Trust strip */}
-          <div className="flex items-center gap-3 text-sm text-[var(--muted)]">
-            <span className="flex items-center gap-1.5">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-[var(--muted)]">
+            <span className="flex items-center gap-1.5 whitespace-nowrap">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M8 1l1.8 3.6L14 5.4l-3 2.9.7 4.1L8 10.4l-3.7 2 .7-4.1-3-2.9 4.2-.8L8 1z" fill="var(--honey)" />
               </svg>
               Sin contratos anuales
             </span>
-            <span className="text-[var(--line)]">·</span>
-            <span>Diagnóstico gratuito</span>
-            <span className="text-[var(--line)]">·</span>
-            <span>Primer resultado en &lt; 2 semanas</span>
+            <span className="text-[var(--line)]" aria-hidden="true">·</span>
+            <span className="whitespace-nowrap">Diagnóstico gratuito</span>
+            <span className="text-[var(--line)]" aria-hidden="true">·</span>
+            <span className="whitespace-nowrap">Resultado en &lt; 2 semanas</span>
           </div>
         </div>
 

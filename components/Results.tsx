@@ -5,11 +5,11 @@ export function Results() {
 
   return (
     <section
-      className="py-24 px-6 bg-[var(--teal)]"
+      className="py-14 md:py-24 px-6 bg-[var(--teal)]"
       aria-labelledby="results-heading"
     >
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <span className="inline-block font-mono text-xs font-medium tracking-widest uppercase text-[var(--honey)] mb-4">
             {results.eyebrow}
           </span>
@@ -26,7 +26,7 @@ export function Results() {
           {results.metrics.map((metric) => (
             <li
               key={metric.label}
-              className="flex flex-col items-center gap-2 p-8 rounded-2xl bg-white/5 border border-white/10 text-center"
+              className="flex flex-col items-center gap-2 p-5 sm:p-8 rounded-2xl bg-white/5 border border-white/10 text-center"
             >
               <span className="font-display text-4xl font-bold text-[var(--honey)]">
                 {metric.value}
@@ -37,7 +37,7 @@ export function Results() {
         </ul>
 
         {/* Bottom statement */}
-        <div className="mt-16 pt-16 border-t border-white/10 grid md:grid-cols-2 gap-10 items-center">
+        <div className="mt-10 pt-10 md:mt-16 md:pt-16 border-t border-white/10 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           <div className="flex flex-col gap-4">
             <p className="text-white/40 text-xs font-semibold tracking-widest uppercase">Lo que esto significa</p>
             <p className="text-white text-2xl sm:text-3xl font-display font-semibold leading-snug">

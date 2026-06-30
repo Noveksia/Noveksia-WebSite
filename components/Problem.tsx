@@ -26,9 +26,9 @@ export function Problem() {
   const { problem } = site;
 
   return (
-    <section className="py-24 px-6 bg-[var(--teal)]" aria-labelledby="problem-heading">
+    <section className="py-14 md:py-24 px-6 bg-[var(--teal)]" aria-labelledby="problem-heading">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <span
             className="inline-block font-mono text-xs font-medium tracking-widest uppercase text-[var(--honey)] mb-4"
           >
@@ -46,7 +46,7 @@ export function Problem() {
           {problem.items.map((item, i) => (
             <li
               key={i}
-              className="flex flex-col gap-4 p-8 rounded-2xl bg-white/5 border border-white/10"
+              className="flex flex-col gap-4 p-5 sm:p-8 rounded-2xl bg-white/5 border border-white/10"
             >
               <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-white">
                 {iconMap[item.icon]}
@@ -57,7 +57,7 @@ export function Problem() {
         </ul>
 
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-white text-xl sm:text-2xl font-medium leading-relaxed border-t border-white/10 pt-12">
+          <p className="text-white text-xl sm:text-2xl font-medium leading-relaxed border-t border-white/10 pt-8 md:pt-12">
             {problem.conclusion}
           </p>
         </div>

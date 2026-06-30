@@ -11,11 +11,11 @@ export function Audience() {
   return (
     <section
       id="para-quien"
-      className="py-24 px-6 bg-[var(--ink)]"
+      className="py-14 md:py-24 px-6 bg-[var(--ink)]"
       aria-labelledby="audience-heading"
     >
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8 md:mb-12">
           <span className="inline-block font-mono text-xs font-medium tracking-widest uppercase text-[var(--honey)] mb-4">
             {audience.eyebrow}
           </span>
@@ -29,7 +29,7 @@ export function Audience() {
 
         {/* Tab switcher */}
         <div
-          className="flex justify-center mb-12"
+          className="flex justify-center mb-8 md:mb-12"
           role="tablist"
           aria-label="Tipo de negocio"
         >
@@ -80,7 +80,7 @@ export function Audience() {
           </div>
 
           {/* Right: solution callout */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-8 flex flex-col gap-6">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col gap-6">
             <div className="w-10 h-10 rounded-xl bg-[var(--honey)]/20 flex items-center justify-center">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                 <path d="M10 2l2 6h6l-5 3.5 1.5 5.5L10 14l-4.5 3 1.5-5.5L2 8h6l2-6z" fill="var(--honey)" />

@@ -69,10 +69,10 @@ export function FAQ() {
   return (
     <section
       id="faq"
-      className="py-24 px-6 bg-[var(--paper)]"
+      className="py-14 md:py-24 px-6 bg-[var(--paper)]"
       aria-labelledby="faq-heading"
     >
-      <div className="max-w-6xl mx-auto grid md:grid-cols-[1fr_2fr] gap-16 items-start">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-[1fr_2fr] gap-10 md:gap-16 items-start">
         <div>
           <span className="text-eyebrow block mb-4">{faq.eyebrow}</span>
           <h2
