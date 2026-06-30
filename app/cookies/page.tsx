@@ -7,28 +7,28 @@ export const metadata: Metadata = {
 
 export default function Cookies() {
   return (
-    <main className="min-h-screen bg-[var(--paper)] px-6 py-24">
+    <main className="min-h-screen bg-[var(--teal)] px-6 py-24">
       <div className="max-w-3xl mx-auto">
-        <a href="/" className="text-sm text-[var(--muted)] hover:text-[var(--ink)] transition-colors mb-10 inline-block">
+        <a href="/" className="text-sm text-white/50 hover:text-white transition-colors mb-10 inline-block">
           ← Volver al inicio
         </a>
 
-        <h1 className="text-heading text-3xl sm:text-4xl text-[var(--ink)] mb-10">Política de Cookies</h1>
+        <h1 className="text-heading text-3xl sm:text-4xl text-white mb-10">Política de Cookies</h1>
 
-        <div className="flex flex-col gap-8 text-[var(--muted)] text-base leading-relaxed">
+        <div className="flex flex-col gap-8 text-white/70 text-base leading-relaxed">
 
           <section>
-            <h2 className="text-heading text-lg text-[var(--ink)] mb-3">¿Qué son las cookies?</h2>
+            <h2 className="text-heading text-lg text-white mb-3">¿Qué son las cookies?</h2>
             <p>Son pequeños archivos que se almacenan en tu dispositivo al navegar y permiten que el sitio funcione correctamente.</p>
           </section>
 
           <section>
-            <h2 className="text-heading text-lg text-[var(--ink)] mb-3">Cookies que utiliza este sitio</h2>
-            <p className="mb-4">Este sitio utiliza únicamente <strong className="text-[var(--ink)]">cookies técnicas o estrictamente necesarias</strong> para su correcto funcionamiento (por ejemplo, seguridad y preferencias básicas). Estas cookies están exentas del deber de consentimiento conforme al artículo 22.2 de la LSSI.</p>
-            <div className="overflow-x-auto rounded-xl border border-[var(--line)]">
+            <h2 className="text-heading text-lg text-white mb-3">Cookies que utiliza este sitio</h2>
+            <p className="mb-4">Este sitio utiliza únicamente <strong className="text-white">cookies técnicas o estrictamente necesarias</strong> para su correcto funcionamiento (por ejemplo, seguridad y preferencias básicas). Estas cookies están exentas del deber de consentimiento conforme al artículo 22.2 de la LSSI.</p>
+            <div className="overflow-x-auto rounded-xl border border-white/20">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-[var(--line)]/60 text-[var(--ink)]">
+                  <tr className="bg-white/10 text-white">
                     <th className="text-left px-4 py-3 font-semibold">Cookie</th>
                     <th className="text-left px-4 py-3 font-semibold">Proveedor</th>
                     <th className="text-left px-4 py-3 font-semibold">Finalidad</th>
@@ -36,8 +36,8 @@ export default function Cookies() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-t border-[var(--line)]">
-                    <td className="px-4 py-3 font-mono text-xs">__vercel_live_token</td>
+                  <tr className="border-t border-white/10">
+                    <td className="px-4 py-3 font-mono text-xs text-white/60">__vercel_live_token</td>
                     <td className="px-4 py-3">Vercel</td>
                     <td className="px-4 py-3">Técnica — funcionamiento del alojamiento</td>
                     <td className="px-4 py-3">Sesión</td>
@@ -45,11 +45,11 @@ export default function Cookies() {
                 </tbody>
               </table>
             </div>
-            <p className="mt-4 text-sm italic">Si en el futuro se añaden cookies analíticas o de terceros, se actualizará esta tabla y se activará un banner de consentimiento.</p>
+            <p className="mt-4 text-sm italic text-white/50">Si en el futuro se añaden cookies analíticas o de terceros, se actualizará esta tabla y se activará un banner de consentimiento.</p>
           </section>
 
           <section>
-            <h2 className="text-heading text-lg text-[var(--ink)] mb-3">Gestión de cookies</h2>
+            <h2 className="text-heading text-lg text-white mb-3">Gestión de cookies</h2>
             <p>Puedes configurar o eliminar las cookies desde la configuración de tu navegador (Chrome, Firefox, Safari, Edge…). Ten en cuenta que desactivar las cookies técnicas puede afectar al funcionamiento del sitio.</p>
           </section>
 
