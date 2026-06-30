@@ -73,7 +73,7 @@ export function FAQ() {
       aria-labelledby="faq-heading"
     >
       <div className="max-w-6xl mx-auto grid md:grid-cols-[1fr_2fr] gap-16 items-start">
-        <div className="sticky top-24">
+        <div>
           <span className="text-eyebrow block mb-4">{faq.eyebrow}</span>
           <h2
             id="faq-heading"
