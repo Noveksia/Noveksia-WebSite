@@ -11,7 +11,7 @@ export function Audience() {
   return (
     <section
       id="para-quien"
-      className="py-14 md:py-24 px-6 bg-[var(--ink)]"
+      className="py-14 md:py-24 px-6 bg-[var(--teal)]"
       aria-labelledby="audience-heading"
     >
       <div className="max-w-6xl mx-auto">
