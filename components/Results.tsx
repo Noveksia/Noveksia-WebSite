@@ -10,7 +10,7 @@ export function Results() {
     >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-10 md:mb-16">
-          <span className="inline-block font-mono text-xs font-medium uppercase text-[var(--honey)] mb-4" style={{ letterSpacing: "0.32em" }}>
+          <span className="inline-block font-mono text-xs font-medium uppercase text-[var(--honey)] mb-4" style={{ letterSpacing: "0.5em" }}>
             {results.eyebrow}
           </span>
           <h2
@@ -39,7 +39,7 @@ export function Results() {
         {/* Bottom statement */}
         <div className="mt-10 pt-10 md:mt-16 md:pt-16 border-t border-white/10 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           <div className="flex flex-col gap-4">
-            <p className="text-white/40 text-xs font-semibold uppercase" style={{ letterSpacing: "0.32em" }}>Lo que esto significa</p>
+            <p className="text-white/40 text-xs font-semibold uppercase" style={{ letterSpacing: "0.5em" }}>Lo que esto significa</p>
             <p className="text-white text-2xl sm:text-3xl font-display font-semibold leading-snug">
               Menos horas perdidas.<br />Más clientes atendidos.<br />El negocio funciona aunque no estés.
             </p>

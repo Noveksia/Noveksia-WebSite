@@ -16,7 +16,7 @@ export function Audience() {
     >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8 md:mb-12">
-          <span className="inline-block font-mono text-xs font-medium uppercase text-[var(--honey)] mb-4" style={{ letterSpacing: "0.32em" }}>
+          <span className="inline-block font-mono text-xs font-medium uppercase text-[var(--honey)] mb-4" style={{ letterSpacing: "0.5em" }}>
             {audience.eyebrow}
           </span>
           <h2
@@ -87,7 +87,7 @@ export function Audience() {
               </svg>
             </div>
             <div>
-              <p className="text-xs font-mono font-medium uppercase text-[var(--honey)] mb-3" style={{ letterSpacing: "0.32em" }}>
+              <p className="text-xs font-mono font-medium uppercase text-[var(--honey)] mb-3" style={{ letterSpacing: "0.5em" }}>
                 Nuestra solución
               </p>
               <p className="text-white text-lg leading-relaxed">{tab.solution}</p>

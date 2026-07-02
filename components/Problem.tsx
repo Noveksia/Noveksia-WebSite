@@ -31,7 +31,7 @@ export function Problem() {
         <div className="text-center mb-10 md:mb-16">
           <span
             className="inline-block font-mono text-xs font-medium uppercase text-[var(--honey)] mb-4"
-            style={{ letterSpacing: "0.32em" }}
+            style={{ letterSpacing: "0.5em" }}
           >
             {problem.eyebrow}
           </span>
