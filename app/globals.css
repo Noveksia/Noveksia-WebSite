@@ -2,18 +2,18 @@
 
 /* ─── Design tokens ─────────────────────────────────────────────────────── */
 :root {
-  --ink:    #15211C;
-  --paper:  #F6F4EF;
-  --honey:  #E29A2C;
-  --teal:   #0F3D3A;
-  --muted:  #6B736E;
-  --line:   #E3DFD6;
+  --ink:    #1C2B3A;
+  --paper:  #F8FAFC;
+  --honey:  #9AA6B2;
+  --teal:   #2A3A4A;
+  --muted:  #BCCCDC;
+  --line:   #D9EAFD;
 
   /* Derivados utilitarios */
-  --honey-10: #E29A2C1A;
-  --honey-20: #E29A2C33;
-  --ink-80:   #15211CCC;
-  --teal-90:  #0F3D3AE6;
+  --honey-10: #9AA6B21A;
+  --honey-20: #9AA6B233;
+  --ink-80:   #1C2B3ACC;
+  --teal-90:  #2A3A4AE6;
 }
 
 /* ─── Tailwind v4 theme mapping ─────────────────────────────────────────── */
