@@ -145,6 +145,9 @@ export function Hero() {
         }}
       />
 
+      {/* Floating message bubbles */}
+      <FloatingMessages messages={site.hero.floatingMessages} />
+
       <div className="relative max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
         {/* Left: Copy */}
         <div className="flex flex-col gap-8">
@@ -195,8 +198,7 @@ export function Hero() {
         </div>
 
         {/* Right: Chat demo */}
-        <div className="relative flex justify-center lg:justify-end">
-          <FloatingMessages messages={site.hero.floatingMessages} />
+        <div className="flex justify-center lg:justify-end">
           <div
             className="w-full max-w-sm bg-[var(--paper)] rounded-2xl shadow-2xl border border-[var(--line)] overflow-hidden"
             style={{ boxShadow: "0 20px 60px -10px rgba(21,33,28,0.15), 0 0 0 1px rgba(227,223,214,0.6)" }}

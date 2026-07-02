@@ -3,13 +3,24 @@
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
+// Positions relative to the hero section (inset-0 overlay).
+// opacity: how faded each slot is — lower = more background.
 const POSITIONS = [
-  { top: "10%",    left: "0" },
-  { top: "48%",    left: "0" },
-  { bottom: "14%", left: "4%" },
+  { top: "12%",  left: "2%",  opacity: 0.38 },
+  { top: "28%",  left: "4%",  opacity: 0.32 },
+  { top: "46%",  left: "1%",  opacity: 0.42 },
+  { top: "64%",  left: "6%",  opacity: 0.35 },
+  { top: "78%",  left: "20%", opacity: 0.38 },
+  { top: "18%",  left: "30%", opacity: 0.30 },
+  { top: "56%",  left: "34%", opacity: 0.33 },
+  { top: "38%",  left: "22%", opacity: 0.28 },
+  { top: "72%",  left: "42%", opacity: 0.30 },
+  { top: "8%",   left: "48%", opacity: 0.28 },
 ] as const;
 
-type Bubble = { id: number; text: string; posIndex: number };
+const MAX_BUBBLES = 6;
+
+type Bubble = { id: number; text: string; posIndex: number; targetOpacity: number };
 
 function BubbleItem({
   id,
@@ -26,20 +37,20 @@ function BubbleItem({
 
   useEffect(() => {
     const t1 = setTimeout(() => setShowCheck(true), 2200);
-    const t2 = setTimeout(() => onRemove(id), 3800);
+    const t2 = setTimeout(() => onRemove(id), 4000);
     return () => { clearTimeout(t1); clearTimeout(t2); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 0.88, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: position.opacity, y: 0 }}
+      exit={{ opacity: 0, y: -6 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
       aria-hidden="true"
-      style={{ position: "absolute", pointerEvents: "none", ...position }}
-      className="flex items-center gap-1 bg-[var(--paper)] border border-[var(--line)] rounded-full px-3 py-1.5 text-xs text-[var(--ink)] shadow-sm whitespace-nowrap"
+      style={{ position: "absolute", pointerEvents: "none", top: position.top, left: position.left }}
+      className="flex items-center gap-1 bg-[var(--paper)] border border-[var(--line)] rounded-full px-3 py-1.5 text-xs text-[var(--ink)] whitespace-nowrap"
     >
       {text}
       <AnimatePresence>
@@ -85,18 +96,18 @@ export function FloatingMessages({ messages }: { messages: readonly string[] }) 
       const text = messages[msgIdx.current++ % messages.length];
 
       setBubbles((prev) => {
-        if (prev.length >= 2 || prev.some((b) => b.id === id)) return prev;
+        if (prev.length >= MAX_BUBBLES || prev.some((b) => b.id === id)) return prev;
         const usedPos = new Set(prev.map((b) => b.posIndex));
-        const avail = [0, 1, 2].filter((i) => !usedPos.has(i));
+        const avail = POSITIONS.map((_, i) => i).filter((i) => !usedPos.has(i));
         if (!avail.length) return prev;
         const posIndex = avail[Math.floor(Math.random() * avail.length)];
-        return [...prev, { id, text, posIndex }];
+        return [...prev, { id, text, posIndex, targetOpacity: POSITIONS[posIndex].opacity }];
       });
 
-      setTimeout(step, 2000 + Math.random() * 1500);
+      setTimeout(step, 900 + Math.random() * 800);
     }
 
-    const init = setTimeout(step, 800);
+    const init = setTimeout(step, 600);
     return () => { alive = false; clearTimeout(init); };
   }, [isDesktop, messages]);
 
@@ -107,32 +118,33 @@ export function FloatingMessages({ messages }: { messages: readonly string[] }) 
 
   if (prefersReducedMotion) {
     return (
-      <>
-        {[0, 1].map((i) => (
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        {POSITIONS.slice(0, 3).map((pos, i) => (
           <div
             key={i}
-            aria-hidden="true"
-            style={{ position: "absolute", ...POSITIONS[i], opacity: 0.7, pointerEvents: "none" }}
+            style={{ position: "absolute", top: pos.top, left: pos.left, opacity: pos.opacity, pointerEvents: "none" }}
             className="bg-[var(--paper)] border border-[var(--line)] rounded-full px-3 py-1.5 text-xs text-[var(--ink)] whitespace-nowrap"
           >
             {messages[i % messages.length]}
           </div>
         ))}
-      </>
+      </div>
     );
   }
 
   return (
-    <AnimatePresence>
-      {bubbles.map((b) => (
-        <BubbleItem
-          key={b.id}
-          id={b.id}
-          text={b.text}
-          position={POSITIONS[b.posIndex]}
-          onRemove={removeBubble}
-        />
-      ))}
-    </AnimatePresence>
+    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      <AnimatePresence>
+        {bubbles.map((b) => (
+          <BubbleItem
+            key={b.id}
+            id={b.id}
+            text={b.text}
+            position={POSITIONS[b.posIndex]}
+            onRemove={removeBubble}
+          />
+        ))}
+      </AnimatePresence>
+    </div>
   );
 }
