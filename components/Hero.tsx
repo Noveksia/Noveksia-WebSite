@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { site } from "@/content/site";
 import { FloatingPathsBackground } from "@/components/ui/background-paths";
+import { FloatingMessages } from "@/components/FloatingMessages";
 
 type Message = {
   from: "user" | "bot";
@@ -194,7 +195,8 @@ export function Hero() {
         </div>
 
         {/* Right: Chat demo */}
-        <div className="flex justify-center lg:justify-end">
+        <div className="relative flex justify-center lg:justify-end">
+          <FloatingMessages messages={site.hero.floatingMessages} />
           <div
             className="w-full max-w-sm bg-[var(--paper)] rounded-2xl shadow-2xl border border-[var(--line)] overflow-hidden"
             style={{ boxShadow: "0 20px 60px -10px rgba(21,33,28,0.15), 0 0 0 1px rgba(227,223,214,0.6)" }}

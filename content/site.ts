@@ -32,6 +32,16 @@ export const site = {
       "Atendemos a tus clientes, captamos leads y mantenemos tu negocio activo — con IA. Tú te centras en lo que importa.",
     cta: { label: "Pide tu diagnóstico gratis", href: "#contacto" },
     ctaSecondary: { label: "Ver cómo funciona", href: "#servicios" },
+    floatingMessages: [
+      "¿Dónde está mi pedido?",
+      "¿Tenéis cita el jueves?",
+      "¿Hacéis envíos?",
+      "¿Abrís el domingo?",
+      "¿Te queda talla M?",
+      "Quiero una devolución",
+      "¿Qué horario tenéis?",
+      "¿Hacéis descuentos?",
+    ],
     // Conversación guionizada para el mini-demo del asistente
     demo: {
       title: "Tu asistente IA",
