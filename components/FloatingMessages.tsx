@@ -5,26 +5,31 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 // Positions relative to the hero section (inset-0 overlay).
 // opacity: how faded each slot is — lower = more background.
-// Positions frame the headline block without overlapping it.
-// Title occupies roughly top 28–70%, left 5–44% — kept clear.
+// Tight ring around the headline block (≈top 25–70%, left 4–44%) — none overlap it.
 const POSITIONS = [
-  // — Above the copy —
-  { top: "9%",   left: "4%",  opacity: 0.42 },
-  { top: "13%",  left: "22%", opacity: 0.36 },
-  { top: "18%",  left: "36%", opacity: 0.32 },
-  // — Below the copy (after CTAs + trust strip) —
-  { top: "76%",  left: "3%",  opacity: 0.40 },
-  { top: "81%",  left: "20%", opacity: 0.34 },
-  { top: "86%",  left: "10%", opacity: 0.38 },
-  // — Right edge of left column (gap between columns) —
-  { top: "30%",  left: "45%", opacity: 0.30 },
-  { top: "48%",  left: "46%", opacity: 0.28 },
-  { top: "63%",  left: "44%", opacity: 0.32 },
-  // — Far left strip —
-  { top: "40%",  left: "0%",  opacity: 0.30 },
+  // — Top edge —
+  { top: "21%", left: "3%",  opacity: 0.44 },
+  { top: "23%", left: "16%", opacity: 0.40 },
+  { top: "22%", left: "30%", opacity: 0.36 },
+  { top: "20%", left: "40%", opacity: 0.33 },
+  // — Left edge —
+  { top: "33%", left: "0%",  opacity: 0.42 },
+  { top: "44%", left: "1%",  opacity: 0.40 },
+  { top: "55%", left: "0%",  opacity: 0.42 },
+  { top: "65%", left: "1%",  opacity: 0.38 },
+  // — Right edge (gap between columns) —
+  { top: "30%", left: "44%", opacity: 0.36 },
+  { top: "42%", left: "45%", opacity: 0.34 },
+  { top: "55%", left: "44%", opacity: 0.36 },
+  { top: "66%", left: "43%", opacity: 0.32 },
+  // — Bottom edge —
+  { top: "72%", left: "3%",  opacity: 0.42 },
+  { top: "74%", left: "16%", opacity: 0.38 },
+  { top: "73%", left: "32%", opacity: 0.34 },
+  { top: "76%", left: "10%", opacity: 0.40 },
 ] as const;
 
-const MAX_BUBBLES = 6;
+const MAX_BUBBLES = 9;
 
 type Bubble = { id: number; text: string; posIndex: number; targetOpacity: number };
 
@@ -110,7 +115,7 @@ export function FloatingMessages({ messages }: { messages: readonly string[] }) 
         return [...prev, { id, text, posIndex, targetOpacity: POSITIONS[posIndex].opacity }];
       });
 
-      setTimeout(step, 900 + Math.random() * 800);
+      setTimeout(step, 500 + Math.random() * 600);
     }
 
     const init = setTimeout(step, 600);
