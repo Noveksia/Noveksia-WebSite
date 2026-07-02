@@ -51,7 +51,7 @@ function BubbleItem({
       transition={{ duration: 0.6, ease: "easeOut" }}
       aria-hidden="true"
       style={{ position: "absolute", pointerEvents: "none", top: position.top, left: position.left }}
-      className="flex items-center gap-1 bg-[var(--paper)] border border-[var(--line)] rounded-full px-3 py-1.5 text-xs text-[var(--ink)] whitespace-nowrap"
+      className="bg-white border border-[var(--line)] rounded-2xl rounded-tl-sm px-3 py-2 text-sm text-[var(--ink)] leading-snug shadow-sm max-w-[13rem]"
     >
       {text}
       <AnimatePresence>
@@ -124,7 +124,7 @@ export function FloatingMessages({ messages }: { messages: readonly string[] }) 
           <div
             key={i}
             style={{ position: "absolute", top: pos.top, left: pos.left, opacity: pos.opacity, pointerEvents: "none" }}
-            className="bg-[var(--paper)] border border-[var(--line)] rounded-full px-3 py-1.5 text-xs text-[var(--ink)] whitespace-nowrap"
+            className="bg-white border border-[var(--line)] rounded-2xl rounded-tl-sm px-3 py-2 text-sm text-[var(--ink)] leading-snug shadow-sm max-w-[13rem]"
           >
             {messages[i % messages.length]}
           </div>
