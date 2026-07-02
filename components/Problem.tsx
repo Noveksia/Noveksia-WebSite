@@ -30,7 +30,7 @@ export function Problem() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-10 md:mb-16">
           <span
-            className="inline-block font-mono text-xs font-medium tracking-widest uppercase text-[var(--honey)] mb-4"
+            className="inline-block font-mono text-xs font-medium tracking-[0.32em] uppercase text-[var(--honey)] mb-4"
           >
             {problem.eyebrow}
           </span>
