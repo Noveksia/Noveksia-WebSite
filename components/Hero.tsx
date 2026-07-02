@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { site } from "@/content/site";
 import { FloatingPathsBackground } from "@/components/ui/background-paths";
-import { FloatingMessages } from "@/components/FloatingMessages";
 
 type Message = {
   from: "user" | "bot";
@@ -147,8 +146,7 @@ export function Hero() {
 
       <div className="relative max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
         {/* Left: Copy */}
-        <div className="relative flex flex-col gap-8">
-          <FloatingMessages messages={site.hero.floatingMessages} />
+        <div className="flex flex-col gap-8">
           <div>
             <span className="text-eyebrow block mb-4">{site.hero.eyebrow}</span>
             <h1
