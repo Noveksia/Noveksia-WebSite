@@ -5,28 +5,23 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 // Positions relative to the hero section (inset-0 overlay).
 // opacity: how faded each slot is — lower = more background.
-// Tight ring around the headline block (≈top 25–70%, left 4–44%) — none overlap it.
+// Positions are relative to the left-column div (the copy block).
+// Bubbles frame it from above, the right side (gap), and below.
 const POSITIONS = [
-  // — Top edge —
-  { top: "21%", left: "3%",  opacity: 0.44 },
-  { top: "23%", left: "16%", opacity: 0.40 },
-  { top: "22%", left: "30%", opacity: 0.36 },
-  { top: "20%", left: "40%", opacity: 0.33 },
-  // — Left edge —
-  { top: "33%", left: "0%",  opacity: 0.42 },
-  { top: "44%", left: "1%",  opacity: 0.40 },
-  { top: "55%", left: "0%",  opacity: 0.42 },
-  { top: "65%", left: "1%",  opacity: 0.38 },
-  // — Right edge (gap between columns) —
-  { top: "30%", left: "44%", opacity: 0.36 },
-  { top: "42%", left: "45%", opacity: 0.34 },
-  { top: "55%", left: "44%", opacity: 0.36 },
-  { top: "66%", left: "43%", opacity: 0.32 },
-  // — Bottom edge —
-  { top: "72%", left: "3%",  opacity: 0.42 },
-  { top: "74%", left: "16%", opacity: 0.38 },
-  { top: "73%", left: "32%", opacity: 0.34 },
-  { top: "76%", left: "10%", opacity: 0.40 },
+  // — Above the copy block —
+  { top: "-18%", left: "4%",  opacity: 0.44 },
+  { top: "-15%", left: "30%", opacity: 0.40 },
+  { top: "-14%", left: "60%", opacity: 0.36 },
+  // — Right side (in the column gap) —
+  { top: "8%",   left: "104%", opacity: 0.42 },
+  { top: "26%",  left: "106%", opacity: 0.38 },
+  { top: "46%",  left: "104%", opacity: 0.42 },
+  { top: "64%",  left: "107%", opacity: 0.38 },
+  { top: "82%",  left: "104%", opacity: 0.40 },
+  // — Below the copy block (after CTAs) —
+  { top: "108%", left: "4%",  opacity: 0.42 },
+  { top: "112%", left: "34%", opacity: 0.38 },
+  { top: "110%", left: "64%", opacity: 0.34 },
 ] as const;
 
 const MAX_BUBBLES = 9;
@@ -129,7 +124,7 @@ export function FloatingMessages({ messages }: { messages: readonly string[] }) 
 
   if (prefersReducedMotion) {
     return (
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         {POSITIONS.slice(0, 3).map((pos, i) => (
           <div
             key={i}
@@ -144,7 +139,7 @@ export function FloatingMessages({ messages }: { messages: readonly string[] }) 
   }
 
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
       <AnimatePresence>
         {bubbles.map((b) => (
           <BubbleItem

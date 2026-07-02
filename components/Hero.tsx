@@ -145,12 +145,10 @@ export function Hero() {
         }}
       />
 
-      {/* Floating message bubbles */}
-      <FloatingMessages messages={site.hero.floatingMessages} />
-
       <div className="relative max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
         {/* Left: Copy */}
-        <div className="flex flex-col gap-8">
+        <div className="relative flex flex-col gap-8">
+          <FloatingMessages messages={site.hero.floatingMessages} />
           <div>
             <span className="text-eyebrow block mb-4">{site.hero.eyebrow}</span>
             <h1
