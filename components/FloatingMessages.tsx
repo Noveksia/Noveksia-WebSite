@@ -5,17 +5,18 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 // Positions relative to the hero section (inset-0 overlay).
 // opacity: how faded each slot is — lower = more background.
+// All positions clustered around the hero headline (left column, mid-upper area)
 const POSITIONS = [
-  { top: "12%",  left: "2%",  opacity: 0.38 },
-  { top: "28%",  left: "4%",  opacity: 0.32 },
-  { top: "46%",  left: "1%",  opacity: 0.42 },
-  { top: "64%",  left: "6%",  opacity: 0.35 },
-  { top: "78%",  left: "20%", opacity: 0.38 },
-  { top: "18%",  left: "30%", opacity: 0.30 },
-  { top: "56%",  left: "34%", opacity: 0.33 },
-  { top: "38%",  left: "22%", opacity: 0.28 },
-  { top: "72%",  left: "42%", opacity: 0.30 },
-  { top: "8%",   left: "48%", opacity: 0.28 },
+  { top: "16%",  left: "1%",  opacity: 0.40 },
+  { top: "22%",  left: "28%", opacity: 0.33 },
+  { top: "30%",  left: "3%",  opacity: 0.38 },
+  { top: "36%",  left: "36%", opacity: 0.30 },
+  { top: "44%",  left: "8%",  opacity: 0.42 },
+  { top: "50%",  left: "32%", opacity: 0.32 },
+  { top: "57%",  left: "2%",  opacity: 0.36 },
+  { top: "62%",  left: "22%", opacity: 0.30 },
+  { top: "24%",  left: "14%", opacity: 0.28 },
+  { top: "48%",  left: "18%", opacity: 0.35 },
 ] as const;
 
 const MAX_BUBBLES = 6;
