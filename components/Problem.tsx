@@ -16,8 +16,8 @@ const iconMap: Record<string, React.ReactNode> = {
   ),
   "trend-down": (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M3 7l6 6 4-4 8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M17 21h4v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3 9v6a1 1 0 001 1h3l5 5V4L7 9H4a1 1 0 00-1 1z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+      <path d="M17 8.5c1.5 1 2.5 2.7 2.5 4.5s-1 3.5-2.5 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   ),
 };
