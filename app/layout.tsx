@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Inter, Geist_Mono } from "next/font/google";
+import { Manrope, Inter } from "next/font/google";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import "./globals.css";
 
@@ -14,13 +14,6 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -45,7 +38,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${manrope.variable} ${inter.variable} ${geistMono.variable}`}
+      className={`${manrope.variable} ${inter.variable}`}
     >
       <body className="min-h-screen antialiased">
         <SmoothScroll />

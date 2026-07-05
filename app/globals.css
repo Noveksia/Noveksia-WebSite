@@ -27,7 +27,7 @@
 
   --font-display: var(--font-manrope);
   --font-body:    var(--font-inter);
-  --font-mono:    var(--font-geist-mono);
+  --font-mono:    var(--font-inter);
 }
 
 /* ─── Base ───────────────────────────────────────────────────────────────── */
