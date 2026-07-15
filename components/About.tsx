@@ -1,47 +1,48 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { site } from "@/content/site";
+import { EASE } from "@/lib/motion";
 
 export function About() {
   const { about } = site;
+  const lastPara = about.paragraphs[about.paragraphs.length - 1];
+  const splitIdx = lastPara.indexOf("Cuando a ti");
+  const leadIn = splitIdx > -1 ? lastPara.slice(0, splitIdx).trim() : lastPara;
+  const quote = splitIdx > -1 ? lastPara.slice(splitIdx).trim() : null;
+  const bodyParagraphs = [...about.paragraphs.slice(0, -1), leadIn];
 
   return (
-    <section className="py-24 px-6 bg-[var(--paper)]" aria-labelledby="about-heading">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col gap-10">
-          <div>
-            <span className="text-eyebrow block mb-4">{about.eyebrow}</span>
-            <h2
-              id="about-heading"
-              className="text-heading text-3xl sm:text-4xl text-[var(--ink)]"
-            >
-              {about.headline}
-            </h2>
-          </div>
-
-          <div className="flex flex-col gap-6 border-l-2 border-[var(--honey)] pl-8">
-            {about.paragraphs.map((p, i) => (
-              <p key={i} className="text-[var(--muted)] text-lg leading-relaxed">
-                {p}
-              </p>
+    <section className="bg-[var(--paper)] py-16 md:py-32 px-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-10 md:gap-20">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.7, ease: EASE }}
+          >
+            <p className="text-eyebrow mb-[18px]">{about.eyebrow}</p>
+            <h2 className="text-heading text-3xl sm:text-4xl text-[var(--ink)]">{about.headline}</h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.7, ease: EASE, delay: 0.12 }}
+            className="flex flex-col gap-5"
+          >
+            {bodyParagraphs.map((p, i) => (
+              <p key={i} className="text-[17px] leading-relaxed text-[var(--muted)]">{p}</p>
             ))}
-          </div>
-
-          <div className="flex items-center gap-8">
-            <div className="flex flex-col">
-              <span className="font-display text-4xl font-bold text-[var(--ink)]">100%</span>
-              <span className="text-sm text-[var(--muted)]">Especialización en IA</span>
-            </div>
-            <div className="w-px h-12 bg-[var(--line)]" aria-hidden="true" />
-            <div className="flex flex-col">
-              <span className="font-display text-4xl font-bold text-[var(--ink)]">2</span>
-              <span className="text-sm text-[var(--muted)]">Semanas al primer resultado</span>
-            </div>
-            <div className="w-px h-12 bg-[var(--line)]" aria-hidden="true" />
-            <div className="flex flex-col">
-              <span className="font-display text-4xl font-bold text-[var(--ink)]">0</span>
-              <span className="text-sm text-[var(--muted)]">Contratos anuales</span>
-            </div>
-          </div>
+          </motion.div>
         </div>
+
+        {quote && (
+          <motion.p
+            initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.95, ease: EASE }}
+            className="text-heading text-2xl sm:text-3xl text-[var(--ink)] max-w-3xl mx-auto text-center mt-[72px] pt-14 border-t border-[var(--line)]"
+          >
+            «{quote}»
+          </motion.p>
+        )}
       </div>
     </section>
   );

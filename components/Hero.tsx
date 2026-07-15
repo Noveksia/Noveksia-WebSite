@@ -1,264 +1,185 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { site } from "@/content/site";
-import { FloatingPathsBackground } from "@/components/ui/background-paths";
+import { Typewriter } from "@/components/ui/typewriter";
+import { EASE } from "@/lib/motion";
 
-type Message = {
-  from: "user" | "bot";
-  text: string;
-  delay?: number;
-};
+const CHAT_SCRIPT = [
+  { role: "client", text: "¿Dónde está mi pedido nº 4521?", time: "09:14" },
+  { role: "assistant", text: "Ya lo tengo localizado: salió ayer y llega mañana antes de las 14:00. Te paso el seguimiento por email.", time: "09:14", typingMs: 1500 },
+  { role: "client", text: "Genial. Por cierto, ¿tenéis cita el jueves?", time: "09:15" },
+  { role: "assistant", text: "Sí — quedan dos huecos: jueves 11:00 o 17:30. ¿Cuál te viene mejor?", time: "09:15", typingMs: 1700 },
+  { role: "client", text: "¿Hacéis envíos a Canarias?", time: "09:16" },
+  { role: "assistant", text: "Sí, a Canarias en 3–4 días laborables, sin coste a partir de 40€.", time: "09:16", typingMs: 1300 },
+] as const;
 
-function TypingIndicator() {
-  return (
-    <div className="flex items-center gap-1 px-4 py-3 bg-white rounded-2xl rounded-tl-sm shadow-sm w-fit">
-      {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          className="w-1.5 h-1.5 rounded-full bg-[var(--muted)]"
-          style={{
-            animation: "typing-dot 1.2s ease infinite",
-            animationDelay: `${i * 0.2}s`,
-          }}
-          aria-hidden="true"
-        />
-      ))}
-    </div>
-  );
-}
+type ChatMessage = { id: number; role: "client" | "assistant"; text: string; time: string };
 
-function ChatDemo({ conversation }: { conversation: typeof site.hero.demo.conversations[0] }) {
-  const [visibleMessages, setVisibleMessages] = useState<Message[]>([]);
-  const [isTyping, setIsTyping] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    setVisibleMessages([]);
-    setCurrentIndex(0);
-    setIsTyping(false);
-    setIsRunning(true);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [conversation.id]);
-
-  useEffect(() => {
-    if (!isRunning) return;
-    const messages = conversation.messages;
-    if (currentIndex >= messages.length) {
-      const timer = setTimeout(() => {
-        setVisibleMessages([]);
-        setCurrentIndex(0);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-
-    const msg = messages[currentIndex];
-    const startDelay = currentIndex === 0 ? 600 : msg.delay ?? 400;
-
-    if (msg.from === "bot") {
-      const typingTimer = setTimeout(() => setIsTyping(true), startDelay);
-      const msgTimer = setTimeout(() => {
-        setIsTyping(false);
-        setVisibleMessages((prev) => [...prev, msg as Message]);
-        setCurrentIndex((i) => i + 1);
-      }, startDelay + (msg.delay ?? 800));
-      return () => { clearTimeout(typingTimer); clearTimeout(msgTimer); };
-    } else {
-      const timer = setTimeout(() => {
-        setVisibleMessages((prev) => [...prev, msg as Message]);
-        setCurrentIndex((i) => i + 1);
-      }, startDelay);
-      return () => clearTimeout(timer);
-    }
-  }, [currentIndex, isRunning, conversation]);
-
-  useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    }
-  }, [visibleMessages, isTyping]);
-
-  return (
-    <div
-      ref={containerRef}
-      className="flex flex-col gap-2 p-4 overflow-y-auto"
-      style={{ minHeight: "200px", maxHeight: "280px" }}
-      aria-live="polite"
-      aria-label={`Demo de conversación: ${conversation.tab}`}
-    >
-      {visibleMessages.map((msg, i) => (
-        <div
-          key={i}
-          className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"} animate-slide-right`}
-        >
-          {msg.from === "bot" && (
-            <div
-              className="w-6 h-6 rounded-full bg-[var(--teal)] flex items-center justify-center mr-2 mt-1 flex-shrink-0"
-              aria-hidden="true"
-            >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <circle cx="6" cy="4" r="2" fill="white" />
-                <path d="M2 10c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </div>
-          )}
-          <div
-            className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm ${
-              msg.from === "user"
-                ? "bg-[var(--ink)] text-white rounded-tr-sm"
-                : "bg-white text-[var(--ink)] rounded-tl-sm"
-            }`}
-          >
-            {msg.text}
-          </div>
-        </div>
-      ))}
-      {isTyping && (
-        <div className="flex justify-start animate-fade-in ml-8">
-          <TypingIndicator />
-        </div>
-      )}
-    </div>
-  );
-}
+const INPUT_WORDS = ["¿Hacéis descuentos?", "¿Abrís el domingo?", "¿Te queda talla M?", "¿Cuánto tarda el envío?"];
 
 export function Hero() {
-  const [activeTab, setActiveTab] = useState(0);
-  const demos = site.hero.demo.conversations;
+  const { hero } = site;
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [typing, setTyping] = useState(false);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setMessages(CHAT_SCRIPT.map((m, i) => ({ id: i, role: m.role, text: m.text, time: m.time })));
+      return;
+    }
+
+    const at = (ms: number, fn: () => void) => timers.current.push(setTimeout(fn, ms));
+
+    function run(startAt: number) {
+      let t = startAt;
+      const GAP = 900;
+      CHAT_SCRIPT.forEach((m, i) => {
+        if (m.role === "client") {
+          at(t, () => setMessages((prev) => [...prev, { id: i, role: "client", text: m.text, time: m.time }]));
+          t += 700;
+        } else {
+          at(t, () => setTyping(true));
+          t += "typingMs" in m ? m.typingMs : 1200;
+          at(t, () => {
+            setTyping(false);
+            setMessages((prev) => [...prev, { id: i, role: "assistant", text: m.text, time: m.time }]);
+          });
+          t += GAP;
+        }
+      });
+      t += 2600;
+      at(t, () => {
+        if (bodyRef.current) bodyRef.current.style.opacity = "0";
+      });
+      at(t + 380, () => {
+        setMessages([]);
+        setTyping(false);
+        if (bodyRef.current) bodyRef.current.style.opacity = "1";
+      });
+      at(t + 700, () => run(500));
+    }
+
+    run(1700);
+
+    return () => timers.current.forEach(clearTimeout);
+  }, []);
+
+  const container = { hidden: {}, show: { transition: { staggerChildren: 0.09, delayChildren: 0.12 } } };
+  const item = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } } };
 
   return (
-    <section className="relative min-h-screen flex items-center pt-16 pb-10 sm:pt-20 sm:pb-16 overflow-hidden bg-[var(--paper)]">
-      {/* Animated background paths */}
-      <FloatingPathsBackground />
-
-      {/* Radial colour washes */}
+    <section id="top" className="relative bg-[var(--paper)] overflow-hidden">
       <div
-        className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 70% 40%, rgba(14,61,58,0.06) 0%, transparent 60%), radial-gradient(circle at 20% 80%, rgba(226,154,44,0.05) 0%, transparent 50%)",
-        }}
+        className="pointer-events-none absolute inset-0"
+        style={{ background: "radial-gradient(700px 520px at 78% 32%, rgba(154,166,178,.13), transparent 70%)" }}
       />
-
-      <div className="relative max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
-        {/* Left: Copy */}
-        <div className="flex flex-col gap-8">
-          <div>
-            <span className="text-eyebrow block mb-4">{site.hero.eyebrow}</span>
-            <h1
-              className="text-display text-4xl sm:text-5xl lg:text-7xl text-[var(--ink)] mb-5"
-              style={{ whiteSpace: "pre-line" }}
-            >
-              {site.hero.headline}
-            </h1>
-            <p className="text-lg sm:text-xl text-[var(--muted)] leading-relaxed max-w-lg">
-              {site.hero.subheadline}
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href={site.hero.cta.href}
-              className="inline-flex items-center justify-center gap-2 bg-[var(--honey)] text-[var(--ink)] font-semibold px-7 py-4 rounded-full text-base hover:opacity-90 active:scale-95 transition-all shadow-sm"
-            >
-              {site.hero.cta.label}
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="relative max-w-6xl mx-auto px-6 pt-32 pb-14 md:pt-40 md:pb-20 grid md:grid-cols-2 gap-12 md:gap-20 items-center"
+      >
+        <div>
+          <motion.p variants={item} className="text-eyebrow mb-5">{hero.eyebrow}</motion.p>
+          <motion.h1 variants={item} className="text-display text-[clamp(42px,6vw,74px)] text-[var(--ink)] mb-6 whitespace-pre-line">
+            {hero.headline}
+          </motion.h1>
+          <motion.p variants={item} className="text-[clamp(17px,2vw,20px)] leading-relaxed text-[var(--muted)] mb-9 max-w-lg">
+            {hero.subheadline}
+          </motion.p>
+          <motion.div variants={item} className="flex flex-wrap items-center gap-[14px]">
+            <a href={hero.cta.href} className="font-semibold text-[15px] text-[var(--ink)] bg-[var(--honey)] px-7 py-[14px] rounded-full hover:opacity-90 active:scale-95 transition-all">
+              {hero.cta.label}
             </a>
-            <a
-              href={site.hero.ctaSecondary.href}
-              className="inline-flex items-center justify-center gap-2 border border-[var(--line)] text-[var(--ink)] font-medium px-7 py-4 rounded-full text-base hover:border-[var(--muted)] hover:bg-[var(--line)]/40 transition-all"
-            >
-              {site.hero.ctaSecondary.label}
+            <a href={hero.ctaSecondary.href} className="font-medium text-[15px] text-[var(--ink)] border border-[var(--line)] px-[26px] py-[14px] rounded-full hover:border-[var(--honey)] active:scale-95 transition-all">
+              {hero.ctaSecondary.label}
             </a>
-          </div>
-
-          {/* Trust strip */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-[var(--muted)]">
-            <span className="flex items-center gap-1.5 whitespace-nowrap">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M8 1l1.8 3.6L14 5.4l-3 2.9.7 4.1L8 10.4l-3.7 2 .7-4.1-3-2.9 4.2-.8L8 1z" fill="var(--honey)" />
-              </svg>
-              Sin contratos anuales
-            </span>
-            <span className="text-[var(--line)]" aria-hidden="true">·</span>
-            <span className="whitespace-nowrap">Diagnóstico gratuito</span>
-            <span className="text-[var(--line)]" aria-hidden="true">·</span>
-            <span className="whitespace-nowrap">Resultado en &lt; 2 semanas</span>
-          </div>
+          </motion.div>
+          <motion.p variants={item} className="mt-6 text-sm font-medium text-[var(--muted)]">
+            Sin permanencia · Cancelas cuando quieras
+          </motion.p>
         </div>
 
-        {/* Right: Chat demo */}
-        <div className="flex justify-center lg:justify-end">
-          <div
-            className="w-full max-w-sm bg-[var(--paper)] rounded-2xl shadow-2xl border border-[var(--line)] overflow-hidden"
-            style={{ boxShadow: "0 20px 60px -10px rgba(21,33,28,0.15), 0 0 0 1px rgba(227,223,214,0.6)" }}
-          >
-            {/* Demo header */}
-            <div className="bg-[var(--teal)] px-5 py-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[var(--honey)] flex items-center justify-center flex-shrink-0">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M8 2a3 3 0 110 6 3 3 0 010-6zM3 13c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="var(--teal)" strokeWidth="1.8" strokeLinecap="round" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-white text-sm font-semibold leading-none">{site.hero.demo.title}</p>
-                  <p className="text-white/60 text-xs mt-0.5">{site.hero.demo.subtitle}</p>
-                </div>
+        <motion.div variants={item}>
+          <div className="w-full max-w-[420px] mx-auto bg-white border border-[var(--line)] rounded-[20px] shadow-[0_32px_64px_-28px_rgba(28,43,58,.28),0_4px_14px_-4px_rgba(28,43,58,.08)] overflow-hidden">
+            <div className="flex items-center gap-3 px-5 py-[18px] border-b border-[var(--line)]/60">
+              <span className="flex-none w-10 h-10 rounded-full bg-[var(--ink)] flex items-center justify-center">
+                <span className="text-display text-sm text-[var(--paper)]">N</span>
+              </span>
+              <div className="min-w-0">
+                <p className="text-heading text-[14.5px] text-[var(--ink)] truncate">Tu asistente IA</p>
+                <p className="mt-0.5 flex items-center gap-1.5 text-xs font-medium text-[var(--muted)]">
+                  <span className="relative w-1.5 h-1.5 flex">
+                    <span className="absolute inset-0 rounded-full bg-[var(--honey)] opacity-55 animate-ping" />
+                    <span className="relative w-1.5 h-1.5 rounded-full bg-[var(--honey)]" />
+                  </span>
+                  En línea · responde al instante
+                </p>
               </div>
-              <span className="flex items-center gap-1.5 text-xs text-white/60">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
-                En línea
+              <span className="ml-auto flex-none text-[9.5px] font-medium tracking-wider uppercase text-[var(--honey)] bg-[var(--paper)] border border-[var(--line)]/60 rounded-full px-2.5 py-1 whitespace-nowrap">
+                Demo
               </span>
             </div>
 
-            {/* Tab selector */}
-            <div className="flex border-b border-[var(--line)] bg-white/50">
-              {demos.map((demo, i) => (
-                <button
-                  key={demo.id}
-                  onClick={() => setActiveTab(i)}
-                  className={`flex-1 py-2.5 text-xs font-medium transition-colors ${
-                    activeTab === i
-                      ? "text-[var(--ink)] border-b-2 border-[var(--honey)]"
-                      : "text-[var(--muted)] hover:text-[var(--ink)]"
-                  }`}
-                  aria-pressed={activeTab === i}
-                >
-                  {demo.tab}
-                </button>
-              ))}
+            <div
+              ref={bodyRef}
+              className="relative flex flex-col justify-end gap-2.5 h-[clamp(300px,38vw,380px)] px-[18px] pt-[18px] pb-1.5 overflow-hidden transition-opacity duration-300"
+            >
+              {messages.map((m) =>
+                m.role === "client" ? (
+                  <div key={m.id} className="self-end max-w-[78%] animate-[nv-msg-in_.5s_cubic-bezier(.22,.61,.36,1)_both]">
+                    <div className="bg-[var(--ink)] text-[var(--paper)] rounded-2xl rounded-br-md px-4 py-2.5 text-[14.5px] leading-snug">
+                      {m.text}
+                    </div>
+                    <div className="flex items-center justify-end gap-1.5 mt-1.5 mr-1">
+                      <span className="text-[10.5px] font-medium text-[var(--honey)]">{m.time}</span>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--honey)" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
+                        <path d="m2 12 4 4 4-4M9 12l4 4 8-9" />
+                      </svg>
+                    </div>
+                  </div>
+                ) : (
+                  <div key={m.id} className="self-start max-w-[82%] animate-[nv-msg-in_.5s_cubic-bezier(.22,.61,.36,1)_both]">
+                    <div className="bg-[var(--paper)] border border-[var(--line)]/60 text-[var(--ink)] rounded-2xl rounded-bl-md px-4 py-2.5 text-[14.5px] leading-snug">
+                      {m.text}
+                    </div>
+                    <div className="mt-1.5 ml-1 text-[10.5px] font-medium text-[var(--honey)]">{m.time}</div>
+                  </div>
+                )
+              )}
+              {typing && (
+                <div className="self-start animate-[nv-msg-in_.35s_cubic-bezier(.22,.61,.36,1)_both]">
+                  <div className="flex items-center gap-1.5 bg-[var(--paper)] border border-[var(--line)]/60 rounded-2xl rounded-bl-md px-4 py-3.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--honey)] animate-[typing-dot_1.2s_ease_infinite]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--honey)] animate-[typing-dot_1.2s_ease_infinite] [animation-delay:.2s]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--honey)] animate-[typing-dot_1.2s_ease_infinite] [animation-delay:.4s]" />
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Messages */}
-            <div className="bg-[var(--paper)]/60">
-              <ChatDemo conversation={demos[activeTab]} />
-            </div>
-
-            {/* Input placeholder */}
-            <div className="px-4 py-3 bg-white border-t border-[var(--line)] flex items-center gap-3">
-              <div className="flex-1 bg-[var(--paper)] rounded-full px-4 py-2 text-sm text-[var(--muted)] border border-[var(--line)]">
-                Escribe tu pregunta...
+            <div className="flex items-center gap-2.5 px-[18px] pb-[18px] pt-3.5">
+              <div className="flex-1 min-w-0 bg-[var(--paper)] border border-[var(--line)]/60 rounded-full px-4 py-2.5 text-sm text-[var(--muted)] overflow-hidden whitespace-nowrap">
+                <Typewriter words={INPUT_WORDS} />
               </div>
-              <button
-                disabled
-                className="w-8 h-8 rounded-full bg-[var(--honey)] flex items-center justify-center opacity-50"
-                aria-label="Enviar (demo)"
-              >
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M1 7h12M8 3l4 4-4 4" stroke="var(--ink)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              <span className="flex-none w-[38px] h-[38px] rounded-full bg-[var(--honey)] flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m22 2-7 20-4-9-9-4Z" />
                 </svg>
-              </button>
+              </span>
             </div>
           </div>
-        </div>
-      </div>
+          <p className="mt-5 text-center text-[15px] font-medium text-[var(--muted)]">
+            Atención al instante, incluso cuando no estás.
+          </p>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

@@ -1,65 +1,69 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import { site } from "@/content/site";
+import { EASE } from "@/lib/motion";
+
+function useSettle(target: string, active: boolean) {
+  const [display, setDisplay] = useState(target);
+  useEffect(() => {
+    if (!active) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const match = target.match(/^([^\d]*)(\d+)(.*)$/);
+    if (!match || reduced) {
+      setDisplay(target);
+      return;
+    }
+    const [, prefix, numStr, suffix] = match;
+    const to = parseInt(numStr, 10);
+    const from = Math.max(0, Math.round(to * 0.4));
+    const start = performance.now();
+    const duration = 650;
+    let raf: number;
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setDisplay(`${prefix}${Math.round(from + (to - from) * eased)}${suffix}`);
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
+  return display;
+}
+
+function Metric({ value, label, delay }: { value: string; label: string; delay: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+  const display = useSettle(value, inView);
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 16 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, ease: EASE, delay }}
+      className="border-l border-white/15 px-6 py-1.5"
+    >
+      <p className="font-semibold text-[clamp(38px,4.5vw,54px)] leading-none tracking-tight text-[var(--paper)]">{display}</p>
+      <p className="mt-3 text-sm text-white/60">{label}</p>
+    </motion.div>
+  );
+}
 
 export function Results() {
   const { results } = site;
-
   return (
-    <section
-      className="py-14 md:py-24 px-6 bg-[var(--teal)]"
-      aria-labelledby="results-heading"
-    >
+    <section className="bg-[var(--ink)] py-16 md:py-32 px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-10 md:mb-16">
-          <span className="inline-block font-mono text-xs font-medium uppercase text-[var(--honey)] mb-4" style={{ letterSpacing: "0.5em" }}>
-            {results.eyebrow}
-          </span>
-          <h2
-            id="results-heading"
-            className="text-heading text-3xl sm:text-4xl text-white"
-          >
-            {results.headline}
-          </h2>
-        </div>
-
-        {/* Metrics */}
-        <ul className="grid grid-cols-2 md:grid-cols-4 gap-6 list-none m-0 p-0">
-          {results.metrics.map((metric) => (
-            <li
-              key={metric.label}
-              className="flex flex-col items-center gap-2 p-5 sm:p-8 rounded-2xl bg-white/5 border border-white/10 text-center"
-            >
-              <span className="font-display text-4xl font-bold text-[var(--honey)]">
-                {metric.value}
-              </span>
-              <span className="text-sm text-white/60 leading-snug">{metric.label}</span>
-            </li>
+        <p className="text-eyebrow mb-[18px]">{results.eyebrow}</p>
+        <h2 className="text-heading text-2xl sm:text-3xl text-[var(--paper)] max-w-xl">{results.headline}</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-9 mt-16">
+          {results.metrics.map((m, i) => (
+            <Metric key={m.label} value={m.value} label={m.label} delay={i * 0.09} />
           ))}
-        </ul>
-
-        {/* Bottom statement */}
-        <div className="mt-10 pt-10 md:mt-16 md:pt-16 border-t border-white/10 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
-          <div className="flex flex-col gap-4">
-            <p className="text-white/40 text-xs font-semibold uppercase" style={{ letterSpacing: "0.5em" }}>Lo que esto significa</p>
-            <p className="text-white text-2xl sm:text-3xl font-display font-semibold leading-snug">
-              Menos horas perdidas.<br />Más clientes atendidos.<br />El negocio funciona aunque no estés.
-            </p>
-          </div>
-          <div className="flex flex-col gap-6">
-            <p className="text-white/60 text-base leading-relaxed">
-              Cada automatización que instalamos trabaja en silencio — respondiendo, recordando, publicando — mientras tú te dedicas a lo que realmente importa en tu negocio.
-            </p>
-            <a
-              href="#contacto"
-              className="inline-flex items-center gap-2 bg-[var(--honey)] text-[var(--ink)] font-semibold px-7 py-4 rounded-full text-base hover:opacity-90 active:scale-95 transition-all w-fit"
-            >
-              Quiero estos resultados
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
-          </div>
         </div>
-
       </div>
     </section>
   );

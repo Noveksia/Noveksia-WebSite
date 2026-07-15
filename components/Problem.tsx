@@ -1,67 +1,81 @@
-import { site } from "@/content/site";
+"use client";
 
-const iconMap: Record<string, React.ReactNode> = {
-  clock: (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M12 7v5l3 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  inbox: (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M21 8H3l2 10h14l2-10z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-      <path d="M3 8l4-4h10l4 4" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-      <path d="M9 13h6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  ),
-  "trend-down": (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M3 9v6a1 1 0 001 1h3l5 5V4L7 9H4a1 1 0 00-1 1z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-      <path d="M17 8.5c1.5 1 2.5 2.7 2.5 4.5s-1 3.5-2.5 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  ),
-};
+import { motion } from "framer-motion";
+import { site } from "@/content/site";
+import { EASE } from "@/lib/motion";
+
+const ICONS = [
+  "M12 6v6l4 2M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20",
+  "M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z",
+  "M16 17h6v-6M22 17 13.5 8.5l-5 5L2 7",
+];
+const LABELS = ["01 · Soporte", "02 · Repetición", "03 · Marketing"];
 
 export function Problem() {
   const { problem } = site;
-
   return (
-    <section className="py-14 md:py-24 px-6 bg-[var(--teal)]" aria-labelledby="problem-heading">
+    <section className="bg-white py-16 md:py-32 px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-10 md:mb-16">
-          <span
-            className="inline-block font-mono text-xs font-medium uppercase text-[var(--honey)] mb-4"
-            style={{ letterSpacing: "0.5em" }}
-          >
-            {problem.eyebrow}
-          </span>
-          <h2
-            id="problem-heading"
-            className="text-heading text-3xl sm:text-4xl text-white max-w-2xl mx-auto"
-          >
-            El día a día que no debería ser así
-          </h2>
-        </div>
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="text-eyebrow"
+        >
+          {problem.eyebrow}
+        </motion.p>
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.06 }}
+          className="text-heading text-3xl sm:text-4xl text-[var(--ink)] mt-[18px]"
+        >
+          Todo recae sobre ti.
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.12 }}
+          className="mt-5 text-lg leading-relaxed text-[var(--muted)] max-w-xl"
+        >
+          Cuando llevas tu negocio solo, cada mensaje, cada duda y cada pedido pasan por ti. No es falta de capacidad — es que un día tiene las mismas 24 horas para todos.
+        </motion.p>
 
-        <ul className="grid sm:grid-cols-3 gap-6 list-none m-0 p-0 mb-16">
-          {problem.items.map((item, i) => (
-            <li
-              key={i}
-              className="flex flex-col gap-4 p-5 sm:p-8 rounded-2xl bg-white/5 border border-white/10"
+        <div className="grid sm:grid-cols-3 gap-6 mt-12">
+          {problem.items.map((it, i) => (
+            <motion.div
+              key={it.text}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, ease: EASE, delay: i * 0.08 }}
+              className="bg-[var(--paper)] border border-[var(--line)]/60 rounded-2xl p-[26px]"
             >
-              <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-white">
-                {iconMap[item.icon]}
+              <div className="flex items-center gap-3 mb-4">
+                <span className="flex-none w-10 h-10 rounded-xl bg-[var(--line)]/40 flex items-center justify-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    <path d={ICONS[i]} />
+                  </svg>
+                </span>
+                <span className="text-xs font-medium tracking-wide uppercase text-[var(--honey)]">{LABELS[i]}</span>
               </div>
-              <p className="text-white/80 text-base leading-relaxed">{item.text}</p>
-            </li>
+              <p className="text-base font-medium text-[var(--ink)] leading-relaxed">{it.text}</p>
+            </motion.div>
           ))}
-        </ul>
-
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-white text-xl sm:text-2xl font-medium leading-relaxed border-t border-white/10 pt-8 md:pt-12">
-            {problem.conclusion}
-          </p>
         </div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.95, ease: EASE }}
+          className="text-heading text-2xl sm:text-3xl text-[var(--ink)] max-w-3xl mx-auto text-center mt-16 pt-14 border-t border-[var(--line)]"
+        >
+          {problem.conclusion}
+        </motion.p>
       </div>
     </section>
   );

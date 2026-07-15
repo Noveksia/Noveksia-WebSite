@@ -1,51 +1,32 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { site } from "@/content/site";
+import { EASE } from "@/lib/motion";
 
 export function Audience() {
-  const [activeTab, setActiveTab] = useState(0);
   const { audience } = site;
-  const tab = audience.tabs[activeTab];
+  const [active, setActive] = useState(audience.tabs[0].id);
+  const tab = audience.tabs.find((t) => t.id === active)!;
 
   return (
-    <section
-      id="para-quien"
-      className="py-14 md:py-24 px-6 bg-[var(--teal)]"
-      aria-labelledby="audience-heading"
-    >
+    <section id="para-quien" className="bg-[var(--teal)] py-16 md:py-32 px-6 scroll-mt-16">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8 md:mb-12">
-          <span className="inline-block font-mono text-xs font-medium uppercase text-[var(--honey)] mb-4" style={{ letterSpacing: "0.5em" }}>
-            {audience.eyebrow}
-          </span>
-          <h2
-            id="audience-heading"
-            className="text-heading text-3xl sm:text-4xl text-white"
-          >
-            {audience.headline}
-          </h2>
-        </div>
-
-        {/* Tab switcher */}
-        <div
-          className="flex justify-center mb-8 md:mb-12"
-          role="tablist"
-          aria-label="Tipo de negocio"
-        >
-          <div className="inline-flex bg-white/5 border border-white/10 rounded-full p-1">
-            {audience.tabs.map((t, i) => (
+        <div className="flex flex-wrap items-end justify-between gap-7">
+          <div>
+            <p className="text-eyebrow mb-[18px]">{audience.eyebrow}</p>
+            <h2 className="text-heading text-3xl sm:text-4xl text-[var(--paper)]">{audience.headline}</h2>
+          </div>
+          <div role="tablist" aria-label="Tipo de negocio" className="flex gap-1 bg-white/8 border border-white/10 rounded-full p-1">
+            {audience.tabs.map((t) => (
               <button
                 key={t.id}
                 role="tab"
-                aria-selected={activeTab === i}
-                aria-controls={`panel-${t.id}`}
-                id={`tab-${t.id}`}
-                onClick={() => setActiveTab(i)}
-                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
-                  activeTab === i
-                    ? "bg-[var(--honey)] text-[var(--ink)]"
-                    : "text-white/60 hover:text-white"
+                aria-selected={active === t.id}
+                onClick={() => setActive(t.id)}
+                className={`text-sm font-medium px-5 py-2.5 rounded-full transition-colors active:scale-95 ${
+                  active === t.id ? "bg-[var(--paper)] text-[var(--ink)] shadow-[0_2px_10px_rgba(0,0,0,.2)]" : "text-white/70 hover:text-white"
                 }`}
               >
                 {t.label}
@@ -54,54 +35,44 @@ export function Audience() {
           </div>
         </div>
 
-        {/* Tab panel */}
-        <div
-          id={`panel-${tab.id}`}
-          role="tabpanel"
-          aria-labelledby={`tab-${tab.id}`}
-          className="grid md:grid-cols-2 gap-10 items-start"
-        >
-          {/* Left: description + pain points */}
-          <div className="flex flex-col gap-8">
-            <p className="text-white/80 text-lg leading-relaxed">{tab.description}</p>
-            <ul className="flex flex-col gap-3 list-none m-0 p-0">
-              {tab.painPoints.map((point, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span
-                    className="mt-1.5 w-4 h-4 rounded-full border border-[var(--honey)]/40 flex items-center justify-center flex-shrink-0"
-                    aria-hidden="true"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--honey)]" />
-                  </span>
-                  <span className="text-white/70 text-base">{point}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Right: solution callout */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col gap-6">
-            <div className="w-10 h-10 rounded-xl bg-[var(--honey)]/20 flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                <path d="M10 2l2 6h6l-5 3.5 1.5 5.5L10 14l-4.5 3 1.5-5.5L2 8h6l2-6z" fill="var(--honey)" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-xs font-mono font-medium uppercase text-[var(--honey)] mb-3" style={{ letterSpacing: "0.5em" }}>
-                Nuestra solución
-              </p>
-              <p className="text-white text-lg leading-relaxed">{tab.solution}</p>
-            </div>
-            <a
-              href="#contacto"
-              className="inline-flex items-center gap-2 bg-[var(--honey)] text-[var(--ink)] font-semibold px-6 py-3 rounded-full text-sm hover:opacity-90 active:scale-95 transition-all w-fit mt-auto"
+        <div className="mt-[52px] min-h-[320px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={tab.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.45, ease: EASE }}
+              className="grid md:grid-cols-2 gap-9 md:gap-[72px]"
             >
-              Cuéntanos tu caso
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
-          </div>
+              <div>
+                <p className="text-[17px] leading-loose text-white/80">{tab.description}</p>
+                <div className="border-t border-white/15 pt-6 mt-[30px]">
+                  <p className="text-[10.5px] font-medium tracking-wide uppercase text-[var(--honey)] mb-2">Nuestra parte</p>
+                  <p className="text-heading text-[19px] text-[var(--paper)] leading-snug">{tab.solution}</p>
+                </div>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-7">
+                <p className="text-[10.5px] font-medium tracking-wide uppercase text-white/55 mb-[18px]">Tu día a día, hoy</p>
+                <div className="flex flex-col gap-3.5">
+                  {tab.painPoints.map((p, i) => (
+                    <motion.div
+                      key={p}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, ease: EASE, delay: 0.14 + i * 0.055 }}
+                      className="flex items-start gap-3"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" strokeWidth={2} strokeLinecap="round" className="flex-none mt-1">
+                        <path d="M6 6l12 12M18 6 6 18" />
+                      </svg>
+                      <span className="text-[14.5px] leading-snug text-white/78">{p}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>
